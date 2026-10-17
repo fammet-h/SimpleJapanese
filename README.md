@@ -9,17 +9,10 @@
 </p>
 
 <p align="center">
-  <a href="evals/README.md"><img src="https://img.shields.io/badge/evaluation-upstream_English_record-blueviolet?style=flat" alt="上流プロジェクトの英語評価記録"></a>
   <a href="https://agentskills.io"><img src="https://img.shields.io/badge/SKILL.md-open_standard-blue?style=flat" alt="Agent Skills"></a>
   <a href="skills/simple-japanese/SKILL.md"><img src="https://img.shields.io/badge/version-1.0.0-blue?style=flat" alt="バージョン1.0.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-lightgrey?style=flat" alt="MIT"></a>
 </p>
-
-<p align="center">
-  <a href="https://trendshift.io/repositories/97933?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-97933" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/97933/daily" alt="AminBlg%2FSimpleEnglish | Trendshift" width="250" height="55"/></a>
-</p>
-
-<!-- [Agent Skills 標準](https://agentskills.io)に対応するエージェントで利用できます。Claude Code、Cursor、VS Code Copilot、OpenAI Codex、Gemini CLI、Goose、OpenCode などに対応しています。依存関係はなく、MITライセンスです。 -->
 
 ## インストール
 
