@@ -31,14 +31,18 @@ function runHook(env) {
 }
 
 test('プラグインのルートにあるプロンプトを優先する', () => {
-  assert.equal(promptCandidates('/plugin', '/plugin/src/hooks')[0], '/plugin/prompts/system-prompt.md');
+  assert.equal(promptCandidates('/plugin', '/plugin/src/hooks')[0], path.join('/plugin', 'prompts', 'system-prompt.md'));
 });
 
 test('プラグインのルートがない場合はリポジトリの配置を使う', () => {
-  assert.equal(promptCandidates(undefined, '/repo/src/hooks')[0], '/repo/prompts/system-prompt.md');
+  assert.equal(promptCandidates(undefined, '/repo/src/hooks')[0], path.join('/repo', 'prompts', 'system-prompt.md'));
 });
 
 test('読み込めない候補を飛ばし、次の候補を読む', (t) => {
+  if (process.platform === 'win32') {
+    t.skip('Windows は chmod による読み取り権限の制御をサポートしません');
+    return;
+  }
   if (process.getuid && process.getuid() === 0) {
     t.skip('root 権限では mode 000 のファイルを読み込めます');
     return;
@@ -78,7 +82,7 @@ test('プロンプトがない場合は短縮ルールを使う', () => {
 test('同梱プロンプトは Claude Code の標準出力上限内に収まる', () => {
   const out = buildContext(fs.readFileSync(REPO_PROMPT, 'utf8'));
   assert.ok(out.length <= MAX_CHARS, `${out.length} > ${MAX_CHARS}`);
-  assert.ok(out.includes('チャットでは'));
+  assert.ok(out.includes('ASD-STE100'));
   assert.ok(!out.includes('単独利用向けシステムプロンプト'), 'ページのタイトルが含まれています');
   assert.ok(!out.includes('短縮版'), '短縮版の節が含まれています');
   assert.ok(!out.includes('貼り付けてください'), '案内文が含まれています');

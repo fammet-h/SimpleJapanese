@@ -9,8 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="evals/results/rebuild-2026-09-02/RESULTS.md"><img src="https://img.shields.io/badge/reply_defects-%E2%88%9295%25_measured-brightgreen?style=flat" alt="SimpleEnglish評価結果"></a>
-  <a href="evals/results/RESULTS.md"><img src="https://img.shields.io/badge/benchmarked_on-9_Claude_models-blueviolet?style=flat" alt="SimpleEnglish評価結果"></a>
+  <a href="evals/README.md"><img src="https://img.shields.io/badge/evaluation-upstream_English_record-blueviolet?style=flat" alt="上流プロジェクトの英語評価記録"></a>
   <a href="https://agentskills.io"><img src="https://img.shields.io/badge/SKILL.md-open_standard-blue?style=flat" alt="Agent Skills"></a>
   <a href="skills/simple-japanese/SKILL.md"><img src="https://img.shields.io/badge/version-1.0.0-blue?style=flat" alt="バージョン1.0.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-lightgrey?style=flat" alt="MIT"></a>
