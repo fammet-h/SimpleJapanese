@@ -1,3 +1,0 @@
-S3 upload failed.
-Access denied.
-The IAM credentials do not have s3:PutObject permission.

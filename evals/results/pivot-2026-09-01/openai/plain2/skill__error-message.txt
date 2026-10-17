@@ -1,3 +1,0 @@
-ERROR: S3 upload failed with AccessDenied.  
-The IAM credentials do not have s3:PutObject permission.  
-Make sure that the IAM user or role can put objects in the bucket.

@@ -1,71 +1,33 @@
-# Simple English hooks
+# Simple Japanese フック
 
-The Claude Code and Codex plugins include a `SessionStart` hook. The hook loads the Simple English writing rules when a session starts, resumes, clears, or compacts. You do not need to name the skill.
+`SessionStart`フックが含まれています。このフックは、セッションの開始、再開、クリア、または圧縮時に、Simple Japaneseのルールを読み込みます。スキルに名前を付ける必要はありません。
 
-The hook needs Node.js. Both plugins run `src/hooks/simple-english-activate.js` with the `node` command.
+このフックにはNode.jsが必要です。両プラグインとも、`node`コマンドで`src/hooks/simple-japanese-activate.js`を実行します。
 
-## Install
+## 設定ファイル
 
-Claude Code:
+フックを初めて実行する前に、そのフックの内容を確認し、信頼できるかどうかを判断します。承認するには、`/hooks`を開いてください。
 
-```bash
-claude plugin marketplace add AminBlg/SimpleEnglish
-claude plugin install simple-english@simple-english
-```
+## フックが送る内容
 
-Codex:
+このフックは、`prompts/system-prompt.md` のフェンス付きルールブロック（約3,500文字）を標準出力に書き込みます。ページタイトル、貼り付け手順、およびワードバジェットバリアントは出力に含まれません。完全なスキルファイル `skills/simple-japanese/SKILL.md`。制限を超える出力はファイルに書き込まれ、モデルはプレビューのみを受け取ります。短縮されたルールはファイルに収まり、フックは完全なスキルパスを指定するため、モデルはコンプライアンスチェックや厳格モードでそのパスを読み取ることができます。
 
-```bash
-codex plugin marketplace add AminBlg/SimpleEnglish
-codex plugin add simple-english@simple-english
-```
+フックがプロンプトファイルを読み取れない場合、次の場所を試します。すべての場所で失敗した場合、短い代替ルールセットを出力して終了コード0を返して終了します。セッションは引き続き開始されます。
 
-Codex asks you to review and trust the hook before its first run. Open `/hooks` to approve it.
+## 各ハーネスがフックに負荷をかける場所
 
-## What the hook sends
+## 動作確認
 
-The hook writes the fenced rule block of `prompts/system-prompt.md` to standard output, about 3,500 characters. The page title, the paste instructions, and the word-budget variant stay out. The full skill, `skills/simple-english/SKILL.md`, is about 7,500 characters, and Claude Code caps hook output at 10,000 characters. Output over the cap goes to a file and the model gets only a preview. The condensed rules fit, and the hook names the full skill path so the model can read it for a compliance check or strict mode.
-
-Codex applies its own cap to hook context. The `additionalContextLimit: 0` setting in `.codex-plugin/hooks.json` turns off the spill-to-disk threshold. It does not remove the cap. The condensed rules fit under it.
-
-If the hook cannot read the prompt file, it tries the next location. If every location fails, it prints a short fallback rule set and exits 0. The session still starts.
-
-## Where each harness loads the hook
-
-- Claude Code: the `hooks` field in `.claude-plugin/plugin.json`.
-- Codex: `.codex-plugin/hooks.json`, named by the `hooks` field in `.codex-plugin/plugin.json`. The marketplace catalog is `.agents/plugins/marketplace.json`.
-
-## Test
-
-From the repository root:
+リポジトリのルートで次のコマンドを実行します。
 
 ```bash
-node --test src/hooks/simple-english-activate.test.js
+node --test src/hooks/simple-japanese-activate.test.js
 ```
 
-## Advisory writing checks (Claude Code)
+テストでは、プラグインルートとリポジトリ配置からのプロンプト検索、読み込み候補の切り替え、frontmatter の除去、出力サイズ超過時のフォールバックを確認します。
 
-Two more hooks run under Claude Code, both advisory. Neither one blocks.
+## ファイルチェックでスキップされる項目
 
-- `PostToolUse` on `Write` and `Edit`: when the file is Markdown, `src/hooks/lint_hook.py` lints it with `evals/ste_lint.py` and shows a one-line summary of the violations to the model.
-- `Stop`: the same script reads the last reply and adds a system message when the reply breaks the register: an em-dash, bold, a header, a list item, a filler opener or closer, or a slop word.
+書き込みルールは、読者向けに作成するドキュメントを対象としています。エージェントが自身のために保持するファイル（メモリファイルなど）は対象外です。このようなファイルにおける違反の概要はトークンを消費するだけです。そのため、`PostToolUse` チェックでは以下の3つのパス群がスキップされます。
 
-Codex runs only the `SessionStart` hook. Test the checks with `python3 src/hooks/test_lint_hook.py`.
-
-## What the file check skips
-
-The writing rules cover the documents that you write for a reader. They do not cover the files that the agent keeps for itself, such as memory files. A summary of the violations in such a file only spends tokens. The `PostToolUse` check therefore skips three groups of paths:
-
-- Every path under the Claude configuration directory. The check reads `CLAUDE_CONFIG_DIR` and falls back to `~/.claude`.
-- Every path with a `.claude` directory component, for example `my-project/.claude/agent-memory/reviewer/MEMORY.md`. A skill or a command that you write under `.claude/` is also skipped.
-- Every path that matches a glob in `SIMPLE_ENGLISH_LINT_EXCLUDE`.
-
-A symlink does not defeat a skip. The check tests the absolute path in two forms, as written and with the symlinks resolved. A match on either form is enough.
-
-`SIMPLE_ENGLISH_LINT_EXCLUDE` holds glob patterns, separated by the path separator of the platform (`:` on Linux and macOS, `;` on Windows). In a pattern, `*` also matches `/`. The check expands a leading `~` to your home directory.
-
-```bash
-export SIMPLE_ENGLISH_LINT_EXCLUDE="$HOME/notes/*:*/CHANGELOG.md"
-```
-
-To turn the file check off, set the variable to `*`. The `Stop` reply check stays on.
+ファイルチェックを無効にするには、変数を `*` に設定します。`Stop` 応答チェックは有効のままです。

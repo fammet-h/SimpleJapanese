@@ -1,1 +1,0 @@
-Verify backup exists before migration.

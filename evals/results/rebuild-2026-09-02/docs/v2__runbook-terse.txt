@@ -1,1 +1,0 @@
-Confirm the backup exists. Run the migration.
